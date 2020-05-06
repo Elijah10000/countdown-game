@@ -6,23 +6,21 @@ E MacNamara
 
 import javax.swing.*;//asking the question using JOptionPane
 import java.util.*;//choosing random letters
-import java.util.Random;
+import java.util.Random;//importing the random package to allow for randomisation
 
 	public class CountdownApp{
 		public static void main (String args[]){
 
 	String lettersArray[];
+	String wordArray[];
 	int round;
 
 	Random r = new Random();
-	char c = (char)(r.nextInt(26) + 'a');
+	char c = (char)(r.nextInt(26));
 
 	StringBuilder letterRandomizer = new StringBuilder();
 
-	Scanner scan;
 	Countdown myCountdown;
-
-	scan = new Scanner(System.in);
 	myCountdown=new Countdown ();
 
 	//compute
