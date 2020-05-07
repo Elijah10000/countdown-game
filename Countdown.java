@@ -34,7 +34,7 @@ public class Countdown{
 		String vowelsArray;
 		String playerOne;
 		String playerTwo;
-		String keyWords;
+		String keyWordsArray;
 		int score;
 		ArrayList<String> lettersArray = new ArrayList<String>();
 		ArrayList<String> wordArray = new ArrayList<String>();
@@ -86,7 +86,7 @@ public class Countdown{
 
 		do {
 			String roundInput = JOptionPane.showInputDialog(null,"How many rounds do you want to play?");//set rounds for the game
-			if(!roundInput.matches("[0-9]+")){//checks if input = 0-9
+			if(!roundInput.matches("[1-9]+")){//checks if input = 1-9
 				JOptionPane.showMessageDialog(null, "You need to enter a valid number.");//if not, asks a user to put in a valid number
 				continue;//causes the loop to jump to next iteration of the loop
 			}
@@ -95,37 +95,77 @@ public class Countdown{
 		} while(true);//loop keeps going until you break out of it
 
 
-		for(int i = 0; i <= 3; i++){
-			String userInput = JOptionPane.showInputDialog(null,"Do you want a vowel or con?");//giving the palyer a choice to choose letter
-
-			if(userInput.toLowerCase().equals("vowel") || userInput.toLowerCase().equals("con")){
-				if (userInput.toLowerCase().equals("vowel")) {
-					String vowel = vowelsArray[rand.nextInt(5)];
-					lettersArray.add(vowel);
-				}
-				else if (userInput.toLowerCase().equals("con")) {
-					String consonant = consonantsArray[rand.nextInt(21)];
-					lettersArray.add(consonant);
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Error: Not a valid answer.");//states that if the answer isn't a consonant or vowel, the answer is invalid
-			}
-
-
-		}
-
-		JOptionPane.showMessageDialog(null, lettersArray);
-
-
-		// Points
+		// Points system
 		int player1TotalPoints = 0;
 		int player2TotalPoints = 0;
 
-		for(int i = 1; i <= round; i++){
-			String player1Word = JOptionPane.showInputDialog(null,"Player1: Now make a Java key word using the letters, " +lettersArray);
-			JOptionPane.showMessageDialog(null, "You word is: " + player1Word);
-			String player2Word = JOptionPane.showInputDialog(null,"Player2: Now make a Java key word using the letters, " +lettersArray);
-			JOptionPane.showMessageDialog(null, "You word is: " + player2Word);
+		for(int j = 1; j <= round; j++){
+			JOptionPane.showMessageDialog(null, "Round: " + j);
+			for(int i = 1; i <= 9; i++){
+				String userInput = JOptionPane.showInputDialog(null,"Do you want a vowel or con?");//giving the player a choice to choose letter
+
+				if(userInput.toLowerCase().equals("vowel") || userInput.toLowerCase().equals("con")){
+					if (userInput.toLowerCase().equals("vowel")) {
+						String vowel = vowelsArray[rand.nextInt(5)];
+						lettersArray.add(vowel);
+					}
+					else if (userInput.toLowerCase().equals("con")) {
+						String consonant = consonantsArray[rand.nextInt(21)];
+						lettersArray.add(consonant);
+					}
+				}
+
+				else {
+					JOptionPane.showMessageDialog(null, "Error: Not a valid answer.");//states that if the answer isn't a consonant or vowel, the answer is invalid
+				}
+			}
+
+			JOptionPane.showMessageDialog(null, lettersArray);
+
+			String player1Word;
+			do {
+				player1Word = JOptionPane.showInputDialog(null,"Player 1: Now make a Java key word using the letters, " +lettersArray);
+				boolean player1WordMatches = false;
+
+				for (int i = 0; i <= keyWordsArray.length - 1; i++) {
+
+					if (player1Word.toLowerCase().contains(keyWordsArray[i])) {
+						player1WordMatches = true;
+						break;
+					}
+				}
+
+
+				if(player1WordMatches == true){
+					JOptionPane.showMessageDialog(null, "You word is: " + player1Word);
+					break;
+				} else {
+					JOptionPane.showMessageDialog(null, "Error");
+				}
+			} while(true);
+
+
+			String player2Word;
+
+			do {
+				player2Word = JOptionPane.showInputDialog(null,"Player 2: Now make a Java key word using the letters, " +lettersArray);
+				boolean player2WordMatches = false;
+
+				for (int i = 0; i <= keyWordsArray.length - 1; i++) {
+
+					if (player2Word.toLowerCase().contains(keyWordsArray[i])) {
+						player2WordMatches = true;
+						break;
+					}
+				}
+
+				if(player2WordMatches == true){
+					JOptionPane.showMessageDialog(null, "You word is: " + player2Word);
+					break;
+				} else {
+					JOptionPane.showMessageDialog(null, "Error");
+				}
+			} while(true);
 
 			int player1points = 0;
 			int player2points = 0;
@@ -140,11 +180,45 @@ public class Countdown{
 				player2TotalPoints += player2points;
 			}
 
-			JOptionPane.showMessageDialog(null, "Player 1 has scored: " + player1points + "points in round " + i + "\nPlayer 2 has scored: " + player2points + "points in round." + i);
+			JOptionPane.showMessageDialog(null, "Player 1 has scored " + player1points + " point(s) in round " + j + "\nPlayer 2 has scored " + player2points + " point(s) in round " + j);
 			JOptionPane.showMessageDialog(null, "Player1 Total: " + player1TotalPoints + "\nPlayer2 Total: " + player2TotalPoints);
+
+
+			if(player1points > player2points){
+				JOptionPane.showMessageDialog(null, "Congratulations, Player 1 has won round: " + j + ", and is " + player1points + "point(s) ahead.");
+			}
+			else if(player2points > player1points){
+							JOptionPane.showMessageDialog(null, "Congratulations, Player 2 has won round: " + j + ", and is " + player2points + " point(s) ahead.");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Stalemate. Round: " + j + "is a draw.");
+			}
+
+			JOptionPane.showMessageDialog(null, "Player1 Total Points: " + player1TotalPoints + "\nPlayer1 Total Points: " + player2TotalPoints );
+
+			lettersArray.removeAll(lettersArray);
+
+		}
+		if(player1TotalPoints > player2TotalPoints){
+			JOptionPane.showMessageDialog(null, "Well done, Player 1 wins, with a score of " + player1TotalPoints);
+		}
+		else if(player2TotalPoints > player1TotalPoints){
+			JOptionPane.showMessageDialog(null, "Well done, Player 2 wins, with a score of " + player2TotalPoints);
 		}
 
+		// Call compute again to replay game if user chooses to replay
+		String playagain = JOptionPane.showInputDialog(null, "Game over. Do you want to replay");
+		if(playagain.toLowerCase().equals("y")){
+			compute();
+		}
+
+		// Add in draw else
+
    }//closes the compute
+
+   //congratulations message at the end
+   //validate that words are form word array
+   //IPO chart
 
 //getter
 
